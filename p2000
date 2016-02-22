@@ -1,0 +1,37 @@
+#!/bin/bash
+
+tmpfile='./p2000.lst'
+url='http://p2000mobiel.nl/'
+region='7/gelderland-midden.html'
+
+red="\e[38;5;9m"
+green="\e[38;5;118m"
+yellow="\e[38;5;220m"
+blue="\e[38;5;39m"
+orange="\e[38;5;208m"
+norm="\e[0m"
+
+# download p2000 alerts for Gelderland-Midden
+wget -O ${tmpfile} -qq ${url}${region}
+
+# strip all html and realign content
+grep "<div class" ${tmpfile} | egrep -v "date|call_type" | sed -e 's/<[^>]*>//g' -e 's/n\[/n\n\[/g' -e 's/)\[/)\n\[/g' | head -n 60 > ${tmpfile}.tmp
+mv ${tmpfile}.tmp ${tmpfile}
+
+# display alerts with color
+while read line; do
+	if [[ $(egrep 'A[1-2]|Ambu|B[1-2]|Solo' <<< ${line}) ]]; then 
+		echo -e "${yellow}${line}${norm}"
+	elif [[ $(egrep 'Lifeliner' <<< ${line}) ]]; then
+		echo -e "${green}${line}${norm}"
+	elif [[ $(egrep 'GLM_|BRW|Brand' <<< ${line}) ]]; then
+		echo -e "${red}${line}${norm}"
+	elif [[ $(egrep 'Kust|KNRM' <<< ${line}) ]]; then
+		echo -e "${orange}${line}${norm}"
+	else
+		echo -e "${blue}${line}${norm}"
+	fi
+done < ${tmpfile}
+
+# cleanup
+rm ${tmpfile}
