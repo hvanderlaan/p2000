@@ -15,7 +15,7 @@ norm="\e[0m"
 wget -O ${tmpfile} -qq ${url}${region}
 
 # strip all html and realign content
-grep "<div class" ${tmpfile} | egrep -v "date|call_type" | sed -e 's/<[^>]*>//g' -e 's/n\[/n\n\[/g' -e 's/)\[/)\n\[/g' -e 's/d\[/d\n\[/g' | head -n 40 > ${tmpfile}.tmp
+grep "<div class" ${tmpfile} | egrep -v "date|call_type" | sed -e 's/<[^>]*>//g' -e 's/n\[/n\n\[/g' -e 's/)\[/)\n\[/g' -e 's/d\[/d\n\[/g' -e 's/e\[/e\n\[/g' | head -n 40 > ${tmpfile}.tmp
 mv ${tmpfile}.tmp ${tmpfile}
 
 # display alerts with color
