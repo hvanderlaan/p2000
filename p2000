@@ -20,12 +20,12 @@ mv ${tmpfile}.tmp ${tmpfile}
 
 # display alerts with color
 while read line; do
-	if [[ $(egrep 'A[1-2]|Ambu|B[1-2]|Solo|VWS|CPA' <<< ${line}) ]]; then 
+	if [[ $(egrep 'Lifeliner' <<< ${line}) ]]; then
+                echo -e "${green}${line}${norm}"
+        elif [[ $(egrep 'GLM_|BRW|Brand' <<< ${line}) ]]; then
+                echo -e "${red}${line}${norm}"
+	elif [[ $(egrep 'A[1-2]|Ambu|B[1-2]|Solo|VWS|CPA' <<< ${line}) ]]; then 
 		echo -e "${yellow}${line}${norm}"
-	elif [[ $(egrep 'Lifeliner' <<< ${line}) ]]; then
-		echo -e "${green}${line}${norm}"
-	elif [[ $(egrep 'GLM_|BRW|Brand' <<< ${line}) ]]; then
-		echo -e "${red}${line}${norm}"
 	elif [[ $(egrep 'Kust|KNRM' <<< ${line}) ]]; then
 		echo -e "${orange}${line}${norm}"
 	else
