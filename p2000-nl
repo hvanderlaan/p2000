@@ -22,7 +22,7 @@ mv ${tmpfile}.tmp ${tmpfile}
 while read line; do
 	if [[ $(egrep 'Lifeliner' <<< ${line}) ]]; then
                 echo -e "${green}${line}${norm}"
-	elif [[ $(egrep 'GLM_|BRW|Brand|^P\ |PRIO' <<< ${line}) ]]; then
+	elif [[ $(egrep 'GLM_|BRW|Brand|^P\ |[pP][rR][iI][oO]' <<< ${line}) ]]; then
                 echo -e "${red}${line}${norm}"
 	elif [[ $(egrep 'A[1-2]|[aA][mM][bB][uU]|B[1-2]|CPA|Solo|VWS|Wachtarts|RAVAA|RAV|MKA|RAD|GHOR' <<< ${line}) ]]; then 
 		echo -e "${yellow}${line}${norm}"
