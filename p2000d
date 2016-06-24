@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# p2000: this script will show all p2000 notifications of the Gelderland provance of The Netherlands
+#
+# author  : harald van der laan
+# date    : 2016/06/23
+# version : v1.0.1
+#
+# requirements:
+# - internet connection (or via a proxy)
+# - curl
+#
+# changelog:
+# v1.0.0        initial version                                         harald van der laan
+# v1.0.1        added proxy support                                     harald van der laan
+
+if [ -z $(which curl) ]; then
+	echo "[-] requirement curl missing"
+	exit 1
+fi
+
 tmpfile='./p2000.lst'
 url='http://p2000mobiel.nl/'
 region='40/geheel-nederland.html'
@@ -21,7 +40,11 @@ while true; do
 	clear
 
 	# download p2000 alerts for Gelderland-Midden
-	wget -O ${tmpfile} -qq ${url}${region}
+	if [ -z ${1} ]; then
+		curl -o ${tmpfile} -sL ${url}${region}
+	else
+		curl --proxy ${1} -o ${tmpfile} -sL ${url}${region}
+	fi
 
 	# strip all html and realign content
 	grep "<div class" ${tmpfile} | egrep -v "date|call_type" | sed -e 's/<[^>]*>//g' -e 's/n\[/n\n\[/g' -e 's/)\[/)\n\[/g' -e 's/d\[/d\n\[/g' -e 's/e\[/e\n\[/g' | head -n 40 > ${tmpfile}.tmp

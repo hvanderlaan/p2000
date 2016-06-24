@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# p2000-nl: this script will show all p2000 notifications of the Gelderland provance of The Netherlands
+#
+# author  : harald van der laan
+# date    : 2016/06/23
+# version : v1.0.1
+#
+# requirements:
+# - internet connection (or via a proxy)
+# - curl
+#
+# changelog:
+# v1.0.0	initial version						harald van der laan
+# v1.0.1	added proxy support					harald van der laan
+
+if [ -z $(which curl) ]; then
+	echo "[-] requirment curl missing."
+	exit 1
+fi
+
 tmpfile='./p2000.lst'
 url='http://p2000mobiel.nl/'
 region='40/geheel-nederland.html'
@@ -12,19 +31,23 @@ orange="\e[38;5;208m"
 norm="\e[0m"
 
 # download p2000 alerts for Gelderland-Midden
-wget -O ${tmpfile} -qq ${url}${region}
+if [ -z ${1} ]; then
+	curl -o ${tmpfile} -sL ${url}${region}
+else
+	curl --proxy ${1} -o ${tmpfile} -sL ${url}${region}
+fi
 
 # strip all html and realign content
-grep "<div class" ${tmpfile} | egrep -v "date|call_type" | sed -e 's/<[^>]*>//g' -e 's/n\[/n\n\[/g' -e 's/)\[/)\n\[/g' -e 's/d\[/d\n\[/g' -e 's/e\[/e\n\[/g' | head -n 40 > ${tmpfile}.tmp
+grep "<div class" ${tmpfile} | egrep -v "date|call_type" | sed -e 's/<[^>]*>//g' -e 's/n\[/n\n\[/g' -e 's/)\[/)\n\[/g' | head -n 40 > ${tmpfile}.tmp
 mv ${tmpfile}.tmp ${tmpfile}
 
 # display alerts with color
 while read line; do
 	if [[ $(egrep 'Lifeliner' <<< ${line}) ]]; then
                 echo -e "${green}${line}${norm}"
-	elif [[ $(egrep 'GLM_|BRW|Brand|^P\ |[pP][rR][iI][oO]' <<< ${line}) ]]; then
+        elif [[ $(egrep 'GLM_|BRW|Brand' <<< ${line}) ]]; then
                 echo -e "${red}${line}${norm}"
-	elif [[ $(egrep 'A[1-2]|[aA][mM][bB][uU]|B[1-2]|CPA|Solo|VWS|Wachtarts|RAVAA|RAV|MKA|RAD|GHOR' <<< ${line}) ]]; then 
+	elif [[ $(egrep 'A[1-2]|Ambu|B[1-2]|Solo|VWS|CPA' <<< ${line}) ]]; then 
 		echo -e "${yellow}${line}${norm}"
 	elif [[ $(egrep 'Kust|KNRM' <<< ${line}) ]]; then
 		echo -e "${orange}${line}${norm}"
