@@ -2,7 +2,7 @@
 shell script that display's dutch fire-, policedepartment and ems pagers
 
 ```bash
-$ ./p2000
+$ ./p2000 [http proxy address]
 ```
 
 ## requirements
