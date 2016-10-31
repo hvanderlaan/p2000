@@ -37,56 +37,61 @@ norm="\e[0m"
 
 # start loop
 while true; do
-	clear
+    clear
 
-	# download p2000 alerts for Gelderland-Midden
-	if [ -z ${1} ]; then
-		curl -o ${tmpfile} -sL ${url}${region}
-	else
-		curl --proxy ${1} -o ${tmpfile} -sL ${url}${region}
-	fi
+    # download p2000 alerts for Gelderland-Midden
+    if [ -z ${1} ]; then
+        curl -o ${tmpfile} -sL ${url}${region}
+    else
+        curl --proxy ${1} -o ${tmpfile} -sL ${url}${region}
+    fi
 
-	# strip all html and realign content
-	grep "<div class" ${tmpfile} | egrep -v "date|call_type" | sed -e 's/<[^>]*>//g' -e 's/n\[/n\n\[/g' -e 's/)\[/)\n\[/g' -e 's/d\[/d\n\[/g' -e 's/e\[/e\n\[/g' | head -n 40 > ${tmpfile}.tmp
-	mv ${tmpfile}.tmp ${tmpfile}
+    # strip all html and realign content
+    grep "<div class" ${tmpfile} | egrep -v "date|call_type" | sed -e 's/<[^>]*>//g' -e 's/n\[/n\n\[/g' -e 's/)\[/)\n\[/g' -e 's/d\[/d\n\[/g' -e 's/e\[/e\n\[/g' | head -n 40 > ${tmpfile}.tmp
+    mv ${tmpfile}.tmp ${tmpfile}
 
+    if [ ! -f ${tmpfile}.old ]; then
+        touch ${tmpfile}.old
+    fi
+    diff -Naur ${tmpfile}.old ${tmpfile} | grep ^+ | grep -v ^+++ | sed -e 's/^+//g' > ${tmpfile}.new
 
-	diff -Naur ${tmpfile}.old ${tmpfile} | grep ^+ | grep -v ^+++ | sed -e 's/^+//g' > ${tmpfile}.new
+    # show new alerts in bold
+    while read line; do
+        if [[ $(egrep 'Lifeliner' <<< ${line}) ]]; then
+            echo -e "${greenb}${line}${norm}"
+        elif [[ $(egrep 'GLM_|BRW|Brand|^P\ |[pP][rR][iI][oO]' <<< ${line}) ]]; then
+            echo -e "${redb}${line}${norm}"
+        elif [[ $(egrep 'Wachtwarts' <<< ${line}) ]]; then
+            echo -e "${blueb}${line}${norm}"
+        elif [[ $(egrep 'A[1-2]|[aA][mM][bB][uU]|B[1-2]|CPA|Solo|VWS|Wachtarts|RAVAA|RAV|MKA|RAD|GHOR' <<< ${line}) ]]; then
+            echo -e "${yellowb}${line}${norm}"
+        elif [[ $(egrep 'Kust|KNRM|KNBRD' <<< ${line}) ]]; then
+            echo -e "${magentab}${line}${norm}"
+        else
+            echo -e "${blueb}${line}${norm}"
+        fi
+    done < ${tmpfile}.new
 
-	# show new alerts in bold
-	while read line; do
-        	if [[ $(egrep 'Lifeliner' <<< ${line}) ]]; then
-                	echo -e "${greenb}${line}${norm}"
-        	elif [[ $(egrep 'GLM_|BRW|Brand|^P\ |[pP][rR][iI][oO]' <<< ${line}) ]]; then
-                	echo -e "${redb}${line}${norm}"
-        	elif [[ $(egrep 'A[1-2]|[aA][mM][bB][uU]|B[1-2]|CPA|Solo|VWS|Wachtarts|RAVAA|RAV|MKA|RAD|GHOR' <<< ${line}) ]]; then
-                	echo -e "${yellowb}${line}${norm}"
-        	elif [[ $(egrep 'Kust|KNRM' <<< ${line}) ]]; then
-                	echo -e "${magentab}${line}${norm}"
-        	else
-                	echo -e "${blueb}${line}${norm}"
-        	fi
-	done < ${tmpfile}.new
+    # display alerts with color
+    while read line; do
+        if [[ $(egrep 'Lifeliner' <<< ${line}) ]]; then
+            echo -e "${green}${line}${norm}"
+        elif [[ $(egrep 'GLM_|BRW|Brand|^P\ |[pP][rR][iI][oO]' <<< ${line}) ]]; then
+            echo -e "${red}${line}${norm}"
+        elif [[ $(egrep 'Wachtarts' <<< ${line}) ]]; then
+            echo -e "${blue}${line}${norm}"
+        elif [[ $(egrep 'A[1-2]|[aA][mM][bB][uU]|B[1-2]|CPA|Solo|VWS|Wachtarts|RAVAA|RAV|MKA|RAD|GHOR' <<< ${line}) ]]; then 
+            echo -e "${yellow}${line}${norm}"
+        elif [[ $(egrep 'Kust|KNRM|KNBRD' <<< ${line}) ]]; then
+            echo -e "${magenta}${line}${norm}"
+        else
+            echo -e "${blue}${line}${norm}"
+        fi
+    done < ${tmpfile}.old
 
-
-# display alerts with color
-	while read line; do
-		if [[ $(egrep 'Lifeliner' <<< ${line}) ]]; then
-                	echo -e "${green}${line}${norm}"
-		elif [[ $(egrep 'GLM_|BRW|Brand|^P\ |[pP][rR][iI][oO]' <<< ${line}) ]]; then
-                	echo -e "${red}${line}${norm}"
-		elif [[ $(egrep 'A[1-2]|[aA][mM][bB][uU]|B[1-2]|CPA|Solo|VWS|Wachtarts|RAVAA|RAV|MKA|RAD|GHOR' <<< ${line}) ]]; then 
-			echo -e "${yellow}${line}${norm}"
-		elif [[ $(egrep 'Kust|KNRM' <<< ${line}) ]]; then
-			echo -e "${orange}${line}${norm}"
-		else
-			echo -e "${blue}${line}${norm}"
-		fi
-	done < ${tmpfile}.old
-
-	# cleanup
-	mv ${tmpfile} ${tmpfile}.old
-	rm ${tmpfile}.new
+    # cleanup
+    mv ${tmpfile} ${tmpfile}.old
+    rm ${tmpfile}.new
 	
-	sleep 60
+    sleep 60
 done
