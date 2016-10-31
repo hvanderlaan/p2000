@@ -63,7 +63,7 @@ while true; do
             echo -e "${redb}${line}${norm}"
         elif [[ $(egrep 'Wachtwarts' <<< ${line}) ]]; then
             echo -e "${blueb}${line}${norm}"
-        elif [[ $(egrep 'A[1-2]|[aA][mM][bB][uU]|B[1-2]|CPA|Solo|VWS|Wachtarts|RAVAA|RAV|MKA|RAD|GHOR' <<< ${line}) ]]; then
+        elif [[ $(egrep 'A[1-2]|[aA][mM][bB][uU]|B[1-2]|CPA|Solo|VWS|Wachtarts|RAVAA|RAV|MKA|RAD|GHOR|OvDG' <<< ${line}) ]]; then
             echo -e "${yellowb}${line}${norm}"
         elif [[ $(egrep 'Kust|KNRM|KNBRD' <<< ${line}) ]]; then
             echo -e "${magentab}${line}${norm}"
@@ -80,7 +80,7 @@ while true; do
             echo -e "${red}${line}${norm}"
         elif [[ $(egrep 'Wachtarts' <<< ${line}) ]]; then
             echo -e "${blue}${line}${norm}"
-        elif [[ $(egrep 'A[1-2]|[aA][mM][bB][uU]|B[1-2]|CPA|Solo|VWS|Wachtarts|RAVAA|RAV|MKA|RAD|GHOR' <<< ${line}) ]]; then 
+        elif [[ $(egrep 'A[1-2]|[aA][mM][bB][uU]|B[1-2]|CPA|Solo|VWS|Wachtarts|RAVAA|RAV|MKA|RAD|GHOR|OvDG' <<< ${line}) ]]; then 
             echo -e "${yellow}${line}${norm}"
         elif [[ $(egrep 'Kust|KNRM|KNBRD' <<< ${line}) ]]; then
             echo -e "${magenta}${line}${norm}"
