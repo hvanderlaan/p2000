@@ -49,7 +49,7 @@ while read line; do
         echo -e "${red}${line}${norm}"
     elif [[ $(egrep 'Wachtarts' <<< ${line}) ]]; then
         echo -e ${blue}${line}${norm}
-    elif [[ $(egrep 'A[1-2]|Ambu|B[1-2]|Solo|VWS|CPA|SEH|MKA|RAVAA' <<< ${line}) ]]; then 
+    elif [[ $(egrep 'A[1-2]|Ambu|B[1-2]|Solo|VWS|CPA|SEH|MKA|RAV' <<< ${line}) ]]; then 
         echo -e "${yellow}${line}${norm}"
     elif [[ $(egrep 'Kust|KNRM' <<< ${line}) ]]; then
         echo -e "${orange}${line}${norm}"
