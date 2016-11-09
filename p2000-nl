@@ -45,11 +45,11 @@ mv ${tmpfile}.tmp ${tmpfile}
 while read line; do
     if [[ $(egrep 'Lifeliner|LFL|MMT|mmt' <<< ${line}) ]]; then
         echo -e "${green}${line}${norm}"
-    elif [[ $(egrep 'GLM_|BRW|Brand' <<< ${line}) ]]; then
+    elif [[ $(egrep 'GLM_|BRW|Brand|^[Pp][Rr][Ii][Oo]|^[Pp]\ |^AL' <<< ${line}) ]]; then
         echo -e "${red}${line}${norm}"
     elif [[ $(egrep 'Wachtarts' <<< ${line}) ]]; then
         echo -e ${blue}${line}${norm}
-    elif [[ $(egrep 'A[1-2]|Ambu|B[1-2]|Solo|VWS|CPA|SEH|MKA|RAV|RAVAA|OvDG' <<< ${line}) ]]; then 
+    elif [[ $(egrep 'A[1-2]|[Aa][Mm][Bb][Uu]|B[1-2]|Solo|VWS|CPA|SEH|MKA|RAV|RAVAA|OvDG' <<< ${line}) ]]; then 
         echo -e "${yellow}${line}${norm}"
     elif [[ $(egrep 'Kust|KNRM|KNBRD' <<< ${line}) ]]; then
         echo -e "${orange}${line}${norm}"
