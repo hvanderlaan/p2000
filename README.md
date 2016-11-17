@@ -3,6 +3,9 @@ shell script that display's dutch fire-, policedepartment and ems pagers
 
 ```bash
 $ ./p2000 [http proxy address]
+$ ./p2000-nl [http proxy address]
+$ ./p2000-grip [http proxy address]
+$ ./p2000d [http proxy address]
 ```
 
 ## requirements
@@ -39,5 +42,6 @@ The following regions can be used:
 25/flevoland.html
 
 40/geheel-nederland.html
+51/grip.html
 ```
 [more info about the regions](https://nl.wikipedia.org/wiki/Veiligheidsregio)
