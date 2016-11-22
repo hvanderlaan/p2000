@@ -59,7 +59,7 @@ while true; do
     while read line; do
         if [[ $(egrep 'Lifeliner' <<< ${line}) ]]; then
             echo -e "${greenb}${line}${norm}"
-        elif [[ $(egrep 'GLM_|BRW|Brand|^P\ |[pP][rR][iI][oO]' <<< ${line}) ]]; then
+        elif [[ $(egrep 'GLM_|BRW|[Bb]rand|^P\ |[pP][rR][iI][oO]' <<< ${line}) ]]; then
             echo -e "${redb}${line}${norm}"
         elif [[ $(egrep 'Wachtwarts' <<< ${line}) ]]; then
             echo -e "${blueb}${line}${norm}"
