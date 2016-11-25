@@ -1,47 +1,50 @@
 # p2000
-shell script that display's dutch fire-, policedepartment and ems pagers
+python script that will show the dutch ems pager services
 
 ```bash
-$ ./p2000 [http proxy address]
-$ ./p2000-nl [http proxy address]
-$ ./p2000-grip [http proxy address]
-$ ./p2000d [http proxy address]
+$ ./p2000.py [region code]
 ```
 
-## requirements
+### requirements
      - working internet connection
+     - p2000lib/p2000.py
 
-## alterations of dutch alert regions
-The default region is set to 'Gelderland-Midden' this can be changed by altering the `${region}`
+### alterations of dutch alert regions
+The default region is set to 'whole netherlands' this can be changed by adding the region code as a parameter
+
 The following regions can be used:
-```
-1/groningen.html
-2/friesland.html
-3/drenthe.html
-4/ijsselland.html
-5/twente.html
-6/noord-en-oost-gelderland.html
-7/gelderland-midden.html
-8/gelderland-zuid.html
-9/utrecht.html
-10/noord-holland-noord.html
-11/aaanstreek-waterland.html
-12/kennemerland.html
-13/amsterdam-amstelland.html
-14/gooi-en-vechtstreek.html
-15/haaglanden.html
-16/hollands-midden.html
-17/rotterdam-eijnmond.html
-18/zuid-holland-zuid.html
-19/zeeland.html
-20/midden-en-west-brabant.html
-21/brabant-noord.html
-22/brabant-zuidoost.html
-23/limburg-noord.html
-24/zuid-limburg.html
-25/flevoland.html
 
-40/geheel-nederland.html
-51/grip.html
-```
+### region information
+
+|region code|name of region             |
+|:---------:|:-------------------------:|
+|1          |groningen                  |
+|2          |friesland                  |
+|3          |drenthe                    |
+|4          |ijsselland                 |
+|5          |twente                     |
+|6          |noord-en-oost-gelderland   |
+|7          |gelderland-midden          |
+|8          |gelderland-zuid            |
+|9          |utrecht                    |
+|10         |noord-holland-noord        |
+|11         |aaanstreek-waterland       |
+|12         |kennemerland               |
+|13         |amsterdam-amstelland       |
+|14         |gooi-en-vechtstreek        |
+|15         |haaglanden                 |
+|16         |hollands-midden            |
+|17         |rotterdam-eijnmond         |
+|18         |zuid-holland-zuid          |
+|19         |zeeland                    |
+|20         |midden-en-west-brabant     |
+|21         |brabant-noord              |
+|22         |brabant-zuidoost           |
+|23         |limburg-noord              |
+|24         |zuid-limburg               |
+|25         |flevoland                  |
+|40         |geheel-nederland           |
+|51         |grip                       |
+
 [more info about the regions](https://nl.wikipedia.org/wiki/Veiligheidsregio)
+[great thanks to p2000mobiel.nl for theire website](http://p2000mobiel.nl)
