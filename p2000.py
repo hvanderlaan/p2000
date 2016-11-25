@@ -50,7 +50,6 @@ def main():
                 if not re.match('.*\"date\"', lines) and not re.match('.*\"call_type_', lines):
                     msg = re.sub('<[^>]+>', '', lines)
                     dfh.write(msg)
-    dfh.close()
 
     with open('p2000.lst', 'r') as pager:
         for dummy in range(35):
@@ -64,8 +63,6 @@ def main():
 
             p2000msg = p2000.PreprocessMessage(msg)
             p2000.DisplayMessage(p2000msg.msgtype, msg)
-
-    pager.close()
 
     os.remove('p2000.lst')
 
