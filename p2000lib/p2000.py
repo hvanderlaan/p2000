@@ -65,7 +65,7 @@ class PreprocessMessage(object):
               or re.match('.*[Bb]rand', msg) or re.match('^[Pp][Rr][Ii][Oo]', msg)
               or re.match('^[Pp] ', msg) or re.match('^AL', msg)):
             self.msgtype = 'fdp'
-        elif re.match('Wachtarts', msg) or re.match('.*Forensisch', msg):
+        elif re.match('.*Wachtarts', msg) or re.match('.*Forensisch', msg):
             self.msgtype = 'pdp'
         elif (re.match('.*A[1-2]', msg) or re.match('.*[Aa][Mm][Bb][Uu]', msg)
               or re.match('.*B[1-2]', msg) or re.match('.*Solo', msg) or re.match('.*VWS', msg)
