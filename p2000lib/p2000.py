@@ -5,15 +5,17 @@
 #
 # author   : harald van der laan
 # date     : 2016/11/25
-# version  : v1.0.0
+# version  : v1.0.1
 #
 # changelog:
+# - v1.0.1      created different colorschema for microsoft windows
 # - v1.0.0      initial version
 
 ''' p2000lib/p2000.py - module for displaying p2000 pager messages '''
 
 from __future__ import print_function
 import re
+import platform
 
 # pylint: disable=R0903
 # R0903: to few public methods
@@ -23,12 +25,20 @@ class DisplayMessage(object):
         self.msgtype = msgtype
         self.msg = msg
 
-        self.fdp = '\033[38;5;9m'       # red color
-        self.lfl = '\033[38;5;118m'     # green color
-        self.ems = '\033[38;5;220m'     # yellow color
-        self.pdp = '\033[38;5;39m'      # blue color
-        self.cgd = '\033[38;5;208m'     # orange color
-        self.rst = '\033[0m'            # normal color (reset)
+        if platform.system() == 'Windows':
+            self.fdp = '\033[1;31m'         # red color
+            self.lfl = '\033[1;32m'         # green color
+            self.ems = '\033[1;33m'         # yellow color
+            self.pdp = '\033[1;34m'         # blue color
+            self.cgd = '\033[31m'           # color light red
+            self.rst = '\033[0m'            # normal color (reset)
+        else:
+            self.fdp = '\033[38;5;9m'       # red color
+            self.lfl = '\033[38;5;118m'     # green color
+            self.ems = '\033[38;5;220m'     # yellow color
+            self.pdp = '\033[38;5;39m'      # blue color
+            self.cgd = '\033[38;5;208m'     # orange color
+            self.rst = '\033[0m'            # normal color (reset)
 
         if msgtype == 'lfl':
             print("{}{}{}" .format(self.lfl, self.msg, self.rst))
