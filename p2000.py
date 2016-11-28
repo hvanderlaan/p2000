@@ -14,7 +14,7 @@
 ''' p2000.py - display the dutch digital emergancy services pager system
 
     usage   : ./p2000.py [region code]
-    requires: internet connect to download messages from http://p2000mobiel.nl '''
+    requires: internet connection to download messages from http://p2000mobiel.nl '''
 
 import sys
 import urllib2
