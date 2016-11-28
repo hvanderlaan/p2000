@@ -1,4 +1,4 @@
-# p2000
+# p2000 [![Build Status](https://travis-ci.org/hvanderlaan/p2000.svg?branch=master)](https://travis-ci.org/hvanderlaan/p2000)
 python script that will show the dutch ems pager services
 
 ```bash
