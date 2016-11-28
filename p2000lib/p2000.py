@@ -26,33 +26,35 @@ class DisplayMessage(object):
         self.msg = msg
 
         if platform.system() == 'Windows':
-            self.fdp = '\033[1;31m'         # red color
-            self.lfl = '\033[1;32m'         # green color
-            self.ems = '\033[1;33m'         # yellow color
-            self.pdp = '\033[1;34m'         # blue color
-            self.cgd = '\033[31m'           # color light red
-            self.rst = '\033[0m'            # normal color (reset)
+            fdp = '\033[1;31m'         # red color
+            lfl = '\033[1;32m'         # green color
+            ems = '\033[1;33m'         # yellow color
+            pdp = '\033[1;34m'         # blue color
+            cgd = '\033[31m'           # color light red
+            rst = '\033[0m'            # normal color (reset)
         else:
-            self.fdp = '\033[38;5;9m'       # red color
-            self.lfl = '\033[38;5;118m'     # green color
-            self.ems = '\033[38;5;220m'     # yellow color
-            self.pdp = '\033[38;5;39m'      # blue color
-            self.cgd = '\033[38;5;208m'     # orange color
-            self.rst = '\033[0m'            # normal color (reset)
+            fdp = '\033[38;5;9m'       # red color
+            lfl = '\033[38;5;118m'     # green color
+            ems = '\033[38;5;220m'     # yellow color
+            pdp = '\033[38;5;39m'      # blue color
+            cgd = '\033[38;5;208m'     # orange color
+            rst = '\033[0m'            # normal color (reset)
 
         if msgtype == 'lfl':
-            print("{}{}{}" .format(self.lfl, self.msg, self.rst))
+            print("{}{}{}" .format(lfl, self.msg, rst))
         elif self.msgtype == 'fdp':
-            print("{}{}{}" .format(self.fdp, self.msg, self.rst))
+            print("{}{}{}" .format(fdp, self.msg, rst))
         elif self.msgtype == 'ems':
-            print("{}{}{}" .format(self.ems, self.msg, self.rst))
+            print("{}{}{}" .format(ems, self.msg, rst))
         elif self.msgtype == 'pdp':
-            print("{}{}{}" .format(self.pdp, self.msg, self.rst))
+            print("{}{}{}" .format(pdp, self.msg, rst))
         elif self.msgtype == 'cgd':
-            print("{}{}{}" .format(self.cgd, self.msg, self.rst))
+            print("{}{}{}" .format(cgd, self.msg, rst))
         else:
-            print("{}{}{}" .format(self.pdp, self.msg, self.rst))
+            print("{}{}{}" .format(pdp, self.msg, rst))
 
+# pylint: disable=R0916
+# too many boolean expressions
 class PreprocessMessage(object):
     ''' class for determening the call type '''
     def __init__(self, msg):
