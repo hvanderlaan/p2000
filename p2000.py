@@ -60,6 +60,7 @@ def main():
             msg = re.sub(r'n\[', 'n\n[', msg)
             msg = re.sub(r'd\[', 'd\n[', msg)
             msg = re.sub(r't\[', 't\n[', msg)
+            msg = re.sub(r'e\[', 'e\n[', msg)
 
             p2000msg = p2000.PreprocessMessage(msg)
             p2000.DisplayMessage(p2000msg.msgtype, msg)
