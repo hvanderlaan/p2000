@@ -11,7 +11,7 @@
 # - v1.0.1      created different colorschema for microsoft windows
 # - v1.0.0      initial version
 
-''' p2000lib/p2000.py - module for displaying p2000 pager messages '''
+""" p2000lib/p2000.py - module for displaying p2000 pager messages """
 
 from __future__ import print_function
 import re
@@ -20,7 +20,7 @@ import platform
 # pylint: disable=R0903
 # R0903: to few public methods
 class DisplayMessage(object):
-    ''' class for displaying the pager messages in color '''
+    """ class for displaying the pager messages in color """
     def __init__(self, msgtype, msg):
         self.msgtype = msgtype
         self.msg = msg
@@ -56,7 +56,7 @@ class DisplayMessage(object):
 # pylint: disable=R0916
 # too many boolean expressions
 class PreprocessMessage(object):
-    ''' class for determening the call type '''
+    """ class for determening the call type """
     def __init__(self, msg):
         self.msg = msg
 
