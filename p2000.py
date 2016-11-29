@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # file     : p2000.py
-# purpose  : display digital pager system of the dutch emergancy services
+# purpose  : display digital pager system of the dutch emergency services
 #
 # author   : harald van der laan
 # date     : 2016/11/25
@@ -11,10 +11,10 @@
 # - v2.0.0      script rewritten to python
 # - =< v1.9.9   Legacy and not supported any more
 
-''' p2000.py - display the dutch digital emergancy services pager system
+""" p2000.py - display the dutch digital emergency services pager system
 
     usage   : ./p2000.py [region code]
-    requires: internet connection to download messages from http://p2000mobiel.nl '''
+    requires: internet connection to download messages from http://p2000mobiel.nl """
 
 import sys
 import urllib2
@@ -29,7 +29,7 @@ except ImportError:
     sys.exit(1)
 
 def main():
-    ''' main function for downloading and displaying the pager messages '''
+    """ main function for downloading and displaying the pager messages """
     if len(sys.argv) == 2:
         # undocumented feature, use only when you know the safety regions in 'the netherlands'
         url = 'http://p2000mobiel.nl/' + sys.argv[1] + '/a.html'
