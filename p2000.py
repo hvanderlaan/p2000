@@ -68,7 +68,10 @@ def main():
 
     with open('p2000.lst', 'r') as pager:
         for dummy in range(35):
-            msg = pager.next()
+            try:
+                msg = pager.next()
+            except StopIteration:
+                break
 
             msg = re.sub(r'\r\n', '', msg)
             msg = re.sub(r'\)\[', ')\n[', msg)
