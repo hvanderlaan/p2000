@@ -3,6 +3,8 @@ python script that will show the dutch ems pager services
 
 ```bash
 $ ./p2000.py [region code]
+$ ./p2000.py [1-25, 40]
+$ ./p2000.py grip
 ```
 
 ### requirements
