@@ -4,12 +4,13 @@ python script that will show the dutch ems pager services
 ```bash
 $ ./p2000.py [region code]
 $ ./p2000.py [1-25, 40]
-$ ./p2000.py grip
+$ ./p2000.py [grip|tis]
 ```
 
 ### requirements
      - working internet connection
      - p2000lib/p2000.py
+     - p2000.cfgy
 
 ### alterations of dutch alert regions
 The default region is set to 'whole netherlands' this can be changed by adding the region code as a parameter
@@ -47,6 +48,7 @@ The following regions can be used:
 |25         |flevoland                  |
 |40         |geheel-nederland           |
 |51         |grip                       |
+|53         |tis                        |
 
 ### licensing and credits
 p2000 is licensed under the GPLv3:
