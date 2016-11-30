@@ -4,10 +4,11 @@
 # purpose  : display digital pager system of the dutch emergency services
 #
 # author   : harald van der laan
-# date     : 2016/11/25
-# version  : v2.0.0
+# date     : 2016/11/30
+# version  : v2.0.1
 #
 # changelog:
+# - v2.0.1      added config file for variable urls
 # - v2.0.0      script rewritten to python
 # - =< v1.9.9   Legacy and not supported any more
 
@@ -20,6 +21,7 @@ import sys
 import urllib2
 import os
 import re
+import ConfigParser
 
 try:
     from p2000lib import p2000
@@ -30,11 +32,24 @@ except ImportError:
 
 def main():
     """ main function for downloading and displaying the pager messages """
+    configfile = 'p2000.cfg'
+
+    if os.path.exists(configfile):
+        cfg = ConfigParser.ConfigParser()
+        cfg.read(configfile)
+    else:
+        sys.stderr.write('[-] p2000: could not find p2000.cfg\n')
+        sys.exit(1)
+
     if len(sys.argv) == 2:
         # undocumented feature, use only when you know the safety regions in 'the netherlands'
-        url = 'http://p2000mobiel.nl/' + sys.argv[1] + '/a.html'
+        baseurl = cfg.get('global', 'baseurl')
+        region = cfg.get('regions', 'region' + sys.argv[1])
+        url = baseurl + region
     else:
-        url = 'http://p2000mobiel.nl/40/geheel-nederland.html'
+        baseurl = cfg.get('global', 'baseurl')
+        region = cfg.get('global', 'defregion')
+        url = baseurl + region
 
     try:
         req = urllib2.Request(url)
