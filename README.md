@@ -10,7 +10,7 @@ $ ./p2000.py [grip|tis|knrm]
 ### requirements
      - working internet connection
      - p2000lib/p2000.py
-     - p2000.cfgy
+     - p2000.cfg
 
 ### alterations of dutch alert regions
 The default region is set to 'whole netherlands' this can be changed by adding the region code as a parameter
