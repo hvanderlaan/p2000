@@ -75,7 +75,7 @@ class PreprocessMessage(object):
               or re.match('.*RAV', msg) or re.match('.*RAVAA', msg) or re.match('.*GHOR', msg)
               or re.match('.*OvDG', msg) or re.match('.*test', msg)):
             self.msgtype = 'ems'
-        elif re.match('.*[Kk][Nn][Bb][Rr][Dd]', msg) or re.match('.*[Kk][Nn][Mm][Rr]', msg):
+        elif re.match('.*[Kk][Nn][Bb][Rr][Dd]', msg) or re.match('.*[Kk][Nn][Rr][Mm]', msg):
             self.msgtype = 'cgd'
         else:
             self.msgtype = 'other'
