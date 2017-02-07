@@ -12,6 +12,10 @@ $ ./p2000.py [grip|tis|knrm]
      - p2000lib/p2000.py
      - p2000.cfg
 
+### todo
+- [ ] add live modus for continues updates
+- [ ] add database support for saving history (mysql or sqlite3)
+
 ### alterations of dutch alert regions
 The default region is set to 'whole netherlands' this can be changed by adding the region code as a parameter
 
