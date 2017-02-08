@@ -4,11 +4,12 @@
 # purpose  : display digital pager system of the dutch emergency services
 #
 # author   : harald van der laan
-# date     : 2016/11/30
-# version  : v2.0.1
+# date     : 2017/02/08
+# version  : v2.1.0
 #
 # changelog:
-# - v2.0.1      added config file for variable urls
+# - v2.1.0      added refresh modus to script and configuration file
+# - v2.0.1      added configuration file for variable urls
 # - v2.0.0      script rewritten to python
 # - =< v1.9.9   Legacy and not supported any more
 
@@ -21,6 +22,8 @@ import sys
 import urllib2
 import os
 import re
+import time
+import platform
 import ConfigParser
 
 try:
@@ -30,25 +33,16 @@ except ImportError:
     sys.stderr.write("[-] please re-download this script.\n")
     sys.exit(1)
 
-def main():
+def main(conf):
     """ main function for downloading and displaying the pager messages """
-    configfile = 'p2000.cfg'
-
-    if os.path.exists(configfile):
-        cfg = ConfigParser.ConfigParser()
-        cfg.read(configfile)
-    else:
-        sys.stderr.write('[-] p2000: could not find p2000.cfg\n')
-        sys.exit(1)
-
     if len(sys.argv) == 2:
         # undocumented feature, use only when you know the safety regions in 'the netherlands'
-        baseurl = cfg.get('global', 'baseurl')
-        region = cfg.get('regions', 'region' + sys.argv[1])
+        baseurl = conf.get('global', 'baseurl')
+        region = conf.get('regions', 'region' + sys.argv[1])
         url = baseurl + region
     else:
-        baseurl = cfg.get('global', 'baseurl')
-        region = cfg.get('global', 'defregion')
+        baseurl = conf.get('global', 'baseurl')
+        region = conf.get('global', 'defregion')
         url = baseurl + region
 
     try:
@@ -87,5 +81,27 @@ def main():
     os.remove('p2000.lst')
 
 if __name__ == "__main__":
-    main()
-    sys.exit(0)
+    CONFIG = 'p2000.cfg'
+
+    if os.path.exists(CONFIG):
+        CONF = ConfigParser.ConfigParser()
+        CONF.read(CONFIG)
+    else:
+        sys.stderr.write('[-] p2000: could not find CONFIGfile: {}\n' .format(CONFIG))
+        sys.exit(1)
+
+    if CONF.get('global', 'refresh') == 'true':
+        try:
+            while True:
+                if platform.system == 'Windows':
+                    os.system('cls')
+                else:
+                    os.system('clear')
+
+                main(CONF)
+                time.sleep(60)
+        except KeyboardInterrupt:
+            sys.exit(0)
+    else:
+        main(CONF)
+        sys.exit(0)
