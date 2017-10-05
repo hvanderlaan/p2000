@@ -4,104 +4,90 @@
 # purpose  : display digital pager system of the dutch emergency services
 #
 # author   : harald van der laan
-# date     : 2017/02/08
-# version  : v2.1.0
+# date     : 2017/10/05
+# version  : v2.2.0
 #
 # changelog:
+# - v2.2.1      Fixed unicode bug
+# - v2.2.0      recode with nicer code
 # - v2.1.0      added refresh modus to script and configuration file
 # - v2.0.1      added configuration file for variable urls
 # - v2.0.0      script rewritten to python
 # - =< v1.9.9   Legacy and not supported any more
 
 """ p2000.py - display the dutch digital emergency services pager system
-
-    usage   : ./p2000.py [region code]
+    usage   : ./p2000.py --help
     requires: internet connection to download messages from http://p2000mobiel.nl """
 
+from __future__ import (print_function, unicode_literals)
+
 import sys
-import urllib2
 import os
-import re
 import time
-import platform
+import re
+import argparse
 import ConfigParser
 
 try:
-    from p2000lib import p2000
+    from libp2000 import libp2000
 except ImportError:
-    sys.stderr.write("[-] could not import p2000lib/p2000.py\n")
-    sys.stderr.write("[-] please re-download this script.\n")
+    sys.stderr.write('[-] could not find libp2000.\n')
     sys.exit(1)
 
 def main(conf):
-    """ main function for downloading and displaying the pager messages """
-    if len(sys.argv) == 2:
-        # undocumented feature, use only when you know the safety regions in 'the netherlands'
-        baseurl = conf.get('global', 'baseurl')
-        region = conf.get('regions', 'region' + sys.argv[1])
-        url = baseurl + region
-    else:
-        baseurl = conf.get('global', 'baseurl')
-        region = conf.get('global', 'defregion')
-        url = baseurl + region
+    """ main function """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-r', '--region', help='security region', default='40')
+    parser.add_argument('-l', '--lines', help='number of lines', default='5')
+    args = parser.parse_args()
 
-    try:
-        req = urllib2.Request(url)
-        raw_html = urllib2.urlopen(req)
-    except urllib2.HTTPError:
-        sys.stderr.write('[-] p2000: could not download content\n')
-        sys.exit(1)
+    numlines = args.lines
+    url = conf.get('global', 'baseurl') + conf.get('regions', 'region' + args.region)
 
-    # download webpage
-    with open('p2000.lst', 'w+') as dfh:
-        for lines in raw_html:
-            if re.match('<div class=', lines):
-                if not re.match('.*\"date\"', lines) and not re.match('.*\"call_type_', lines):
-                    msg = re.sub('<[^>]+>', '', lines)
-                    dfh.write(msg)
+    # color schema
+    fdp = '\033[38;5;9m'
+    lfl = '\033[38;5;118m'
+    ems = '\033[38;5;220m'
+    pdp = '\033[38;5;39m'
+    cgd = '\033[38;5;208m'
+    rst = '\033[0m'
 
-    with open('p2000.lst', 'r') as pager:
-        for dummy in range(35):
-            try:
-                msg = pager.next()
-            except StopIteration:
-                break
+    data = libp2000.get_p2000_data(url)
+    p2000data = libp2000.convert_to_json(data)
 
-            msg = re.sub(r'\r\n', '', msg)
-            msg = re.sub(r'\)\[', ')\n[', msg)
-            msg = re.sub(r'n\[', 'n\n[', msg)
-            msg = re.sub(r'd\[', 'd\n[', msg)
-            msg = re.sub(r't\[', 't\n[', msg)
-            msg = re.sub(r'e\[', 'e\n[', msg)
-            msg = re.sub(r'k\[', 'k\n[', msg)
+    for _ in xrange(int(numlines)):
+        if re.match('Ambulance', str(p2000data['p2000'][_]["call_type"])):
+            col = ems
+        elif re.match('Brandweer', str(p2000data['p2000'][_]["call_type"])):
+            col = fdp
+        elif re.match('Lifeliner', str(p2000data['p2000'][_]["call_type"])):
+            col = lfl
+        elif re.match('Politie', str(p2000data['p2000'][_]["call_type"])):
+            col = pdp
+        else:
+            col = cgd
 
-            p2000msg = p2000.PreprocessMessage(msg)
-            p2000.DisplayMessage(p2000msg.msgtype, msg)
+        print('{}{} - {}'. format(col, p2000data['p2000'][_]["date"],
+                                  p2000data['p2000'][_]["call_type"]))
+        print('{}{}' .format(col, p2000data['p2000'][_]["message"]))
+        for i in xrange(len(p2000data['p2000'][_]['called'])):
+            print('{}{}' .format(col, p2000data['p2000'][_]['called'][i]))
 
-    os.remove('p2000.lst')
+        print('{}' .format(rst))
 
 if __name__ == "__main__":
-    CONFIG = 'p2000.cfg'
-
-    if os.path.exists(CONFIG):
-        CONF = ConfigParser.ConfigParser()
-        CONF.read(CONFIG)
-    else:
-        sys.stderr.write('[-] p2000: could not find CONFIGfile: {}\n' .format(CONFIG))
-        sys.exit(1)
+    CONF = ConfigParser.ConfigParser()
+    CONF.read('p2000.cfg')
 
     if CONF.get('global', 'refresh') == 'true':
         try:
             while True:
-                if platform.system == 'Windows':
-                    os.system('cls')
-                else:
-                    os.system('clear')
-
+                os.system('clear')
                 main(CONF)
-                time.sleep(60)
+                time.sleep(int(CONF.get('global', 'refreshtime')))
         except KeyboardInterrupt:
             sys.exit(0)
     else:
         main(CONF)
-        sys.exit(0)
+
+    sys.exit(0)
