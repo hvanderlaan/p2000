@@ -8,7 +8,8 @@
 # version  : v2.2.0
 #
 # changelog:
-# - v2.2.o      recode with nicer code
+# - v2.2.1      Fixed unicode bug
+# - v2.2.0      recode with nicer code
 # - v2.1.0      added refresh modus to script and configuration file
 # - v2.0.1      added configuration file for variable urls
 # - v2.0.0      script rewritten to python
@@ -18,7 +19,7 @@
     usage   : ./p2000.py --help
     requires: internet connection to download messages from http://p2000mobiel.nl """
 
-from __future__ import print_function
+from __future__ import (print_function, unicode_literals)
 
 import sys
 import os
