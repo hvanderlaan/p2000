@@ -4,15 +4,17 @@ python script that will show the dutch ems pager services.
 default settings has the refresh modus disabled. if you want the refresh modus enabled, please change `refresh = false` to `refresh = true` in the configuration file `p2000.cfg` under the `[global]` section.
 
 ```bash
-$ ./p2000.py [region code]
-$ ./p2000.py [1-25, 40]
-$ ./p2000.py [grip|tis|knrm]
+$ ./p2000.py --help
+$ ./p2000.py -r <region code>
+$ ./p2000.py -r <[1-25, 40] [grip|tis|knrm]>
+$ ./p2000.py -l <number of lines>
 ```
 
 ### requirements
-     - working internet connection
-     - p2000lib/p2000.py
-     - p2000.cfg
+    - working internet connection
+    - libp2000/libp2000.py
+        - requires: requests and bs4 (pip install -r requirements.txt)
+    - p2000.cfg
 
 ### todo
 - [x] create live modus for automatic refresh
