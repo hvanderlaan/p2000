@@ -1,19 +1,57 @@
 #!/usr/bin/env python
 
-# file     : p2000.py
-# purpose  : display digital pager system of the dutch emergency services
+# File   : ./p2000.py
+# Purpose: Python script for showing emergency services pager messages
 #
-# author   : harald van der laan
-# date     : 2017/10/05
-# version  : v2.2.0
+# Auhtor : Harald van der Laan
+# Date   : 2017/10/06
+# Version: v2.2.2
 #
-# changelog:
-# - v2.2.1      Fixed unicode bug
-# - v2.2.0      recode with nicer code
-# - v2.1.0      added refresh modus to script and configuration file
-# - v2.0.1      added configuration file for variable urls
-# - v2.0.0      script rewritten to python
-# - =< v1.9.9   Legacy and not supported any more
+# Requirements:
+#  - requests
+#  - bs4
+#  - working internet connection
+#
+# Changelog:
+#  - v2.2.2     Created new header in python files                       Harald
+#  - v2.2.1     Fixed unicode bug                                        Harald
+#  - v2.2.0     recode with nicer code                                   Harald
+#  - v2.1.0     added refresh modus to script and configuration file     Harald
+#  - v2.0.1     added configuration file for variable urls               Harald
+#  - v2.0.0     script rewritten to python                               Harald
+#  - =< v1.9.9  Legacy and not supported any more                        Harald
+#
+# Copyright:
+# =============================================================================
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# For the full license, see the LICENSE file.
+#
+# Disclaimer:
+# =============================================================================
+# Software provided by Harald van der Laan is for illustrative purposes only
+# which provides customers with programming information regarding the products.
+# This software is supplied "AS IS" without any warranties and support.
+#
+# Harald van der Laan assumes no responsibility or liability for the use of the
+# software, conveys no license or title under any patent, copyright, or mask
+# work right to the product.
+#
+# Harald van der Laan reserves the right to make changes in the software without
+# notification. Harald van der Laan also make no representation or warranty that
+# such application will be suitable for the specified use without further
+# testing or modification.
 
 """ p2000.py - display the dutch digital emergency services pager system
     usage   : ./p2000.py --help

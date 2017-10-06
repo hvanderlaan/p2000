@@ -1,5 +1,53 @@
 #!/usr/bin/env python
 
+# File   : ./libp2000/libp2000.py
+# Purpose: Library file for the p2000.py script
+#
+# Auhtor : Harald van der Laan
+# Date   : 2017/10/06
+# Version: v1.0.1
+#
+# Requirements:
+#  - requests
+#  - bs4
+#  - working internet connection
+#
+# Changelog:
+#  - v1.0.1     Created new header in python files                       Harald
+#  - v1.0.0     Initial version                                          Harald
+#
+# Copyright:
+# =============================================================================
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# For the full license, see the LICENSE file.
+#
+# Disclaimer:
+# =============================================================================
+# Software provided by Harald van der Laan is for illustrative purposes only
+# which provides customers with programming information regarding the products.
+# This software is supplied "AS IS" without any warranties and support.
+#
+# Harald van der Laan assumes no responsibility or liability for the use of the
+# software, conveys no license or title under any patent, copyright, or mask
+# work right to the product.
+#
+# Harald van der Laan reserves the right to make changes in the software without
+# notification. Harald van der Laan also make no representation or warranty that
+# such application will be suitable for the specified use without further
+# testing or modification.
+
 """ libp2000.py - python function file for processing p2000 pager messages """
 
 import sys
