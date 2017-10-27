@@ -4,8 +4,8 @@
 # Purpose: Python script for showing emergency services pager messages
 #
 # Auhtor : Harald van der Laan
-# Date   : 2017/10/06
-# Version: v2.2.2
+# Date   : 2017/10/27
+# Version: v2.2.3
 #
 # Requirements:
 #  - requests
@@ -13,6 +13,7 @@
 #  - working internet connection
 #
 # Changelog:
+#  - v2.2.3     better import of configfile                              Harald
 #  - v2.2.2     Created new header in python files                       Harald
 #  - v2.2.1     Fixed unicode bug                                        Harald
 #  - v2.2.0     recode with nicer code                                   Harald
@@ -114,8 +115,9 @@ def main(conf):
         print('{}' .format(rst))
 
 if __name__ == "__main__":
+    CONFIG = os.path.dirname(os.path.abspath(__file__)) + '/p2000.cfg'
     CONF = ConfigParser.ConfigParser()
-    CONF.read('p2000.cfg')
+    CONF.read(CONFIG)
 
     if CONF.get('global', 'refresh') == 'true':
         try:
