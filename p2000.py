@@ -128,6 +128,7 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             sys.exit(0)
     else:
+        os.system('clear')
         main(CONF)
 
     sys.exit(0)
