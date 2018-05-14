@@ -4,15 +4,18 @@
 # Purpose: Python script for showing emergency services pager messages
 #
 # Auhtor : Harald van der Laan
-# Date   : 2017/10/27
-# Version: v2.2.3
+# Date   : 2018/05/14
+# Version: v2.3.1
 #
 # Requirements:
 #  - requests
 #  - bs4
+#  - progress
 #  - working internet connection
 #
 # Changelog:
+#  - v2.3.1     Added extra option -c and clean up unused code           Harald
+#  - v2.3.0     pretify follow mode / autorefresh                        Gerdriaan
 #  - v2.2.3     better import of configfile                              Harald
 #  - v2.2.2     Created new header in python files                       Harald
 #  - v2.2.1     Fixed unicode bug                                        Harald
@@ -107,9 +110,10 @@ def p2000_pp(el):
 def main(conf):
     """ main function """
     parser = argparse.ArgumentParser()
-    parser.add_argument('-r', '--region', help='security region', default='40')
-    parser.add_argument('-l', '--lines', help='number of lines', default='5')
+    parser.add_argument('-c', '--clear', help='clear previous messagesi. works only with -f', default=False, action='store_true')
     parser.add_argument('-f', '--follow', help='follow mode', default=False, action='store_true')
+    parser.add_argument('-l', '--lines', help='number of lines', default='5')
+    parser.add_argument('-r', '--region', help='security region', default='40')
     args = parser.parse_args()
 
     numlines = args.lines
@@ -127,7 +131,7 @@ def main(conf):
 
     if args.follow:
         refreshtime = int(conf.get('global', 'refreshtime'))
-        bar = Bar('Sleeping', max=refreshtime)
+        bar = Bar('Refresh in: ', max=refreshtime)
         olddata = p2000data['p2000']
         try:
             while True:
@@ -135,6 +139,8 @@ def main(conf):
                 newdata.reverse()
                 diff = [x for x in newdata if x not in olddata]
                 if len(diff) > 0:
+                    if args.clear:
+                        os.system('clear')
                     for item in diff:
                         print(p2000_pp(item))
                 olddata = newdata
@@ -153,16 +159,7 @@ if __name__ == "__main__":
     CONF = ConfigParser.ConfigParser()
     CONF.read(CONFIG)
 
-    if CONF.get('global', 'refresh') == 'true':
-        try:
-            while True:
-                os.system('clear')
-                main(CONF)
-                time.sleep(int(CONF.get('global', 'refreshtime')))
-        except KeyboardInterrupt:
-            sys.exit(0)
-    else:
-        os.system('clear')
-        main(CONF)
+    os.system('clear')
+    main(CONF)
 
     sys.exit(0)
