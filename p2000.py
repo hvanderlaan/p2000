@@ -59,6 +59,7 @@
     requires: internet connection to download messages from http://p2000mobiel.nl """
 
 from __future__ import (print_function, unicode_literals)
+from progress.bar import Bar
 
 import sys
 import os
@@ -73,16 +74,7 @@ except ImportError:
     sys.stderr.write('[-] could not find libp2000.\n')
     sys.exit(1)
 
-def main(conf):
-    """ main function """
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-r', '--region', help='security region', default='40')
-    parser.add_argument('-l', '--lines', help='number of lines', default='5')
-    args = parser.parse_args()
-
-    numlines = args.lines
-    url = conf.get('global', 'baseurl') + conf.get('regions', 'region' + args.region)
-
+def p2000_pp(el):
     # color schema
     fdp = '\033[38;5;9m'
     lfl = '\033[38;5;118m'
@@ -91,28 +83,70 @@ def main(conf):
     cgd = '\033[38;5;208m'
     rst = '\033[0m'
 
+    if re.match('Ambulance', str(el["call_type"])):
+        col = ems
+    elif re.match('Brandweer', str(el["call_type"])):
+        col = fdp
+    elif re.match('Lifeliner', str(el["call_type"])):
+        col = lfl
+    elif re.match('Politie', str(el["call_type"])):
+        col = pdp
+    else:
+        col = cgd
+
+    ret = '{}{} - {}\n'.format(col, el["date"], el["call_type"])
+    ret += '{}{}\n'.format(col, el["message"])
+    for i in xrange(len(el['called'])):
+        ret += '{}{}\n' .format(col, el['called'][i])
+
+    ret += '{}' .format(rst)
+
+    return ret
+
+
+def main(conf):
+    """ main function """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-r', '--region', help='security region', default='40')
+    parser.add_argument('-l', '--lines', help='number of lines', default='5')
+    parser.add_argument('-f', '--follow', help='follow mode', default=False, action='store_true')
+    args = parser.parse_args()
+
+    numlines = args.lines
+    url = conf.get('global', 'baseurl') + conf.get('regions', 'region' + args.region)
+
     data = libp2000.get_p2000_data(url)
     p2000data = libp2000.convert_to_json(data)
 
-    for _ in xrange(int(numlines)):
-        if re.match('Ambulance', str(p2000data['p2000'][_]["call_type"])):
-            col = ems
-        elif re.match('Brandweer', str(p2000data['p2000'][_]["call_type"])):
-            col = fdp
-        elif re.match('Lifeliner', str(p2000data['p2000'][_]["call_type"])):
-            col = lfl
-        elif re.match('Politie', str(p2000data['p2000'][_]["call_type"])):
-            col = pdp
-        else:
-            col = cgd
+    for _ in range(int(numlines)):
+        idx = _
+        if args.follow:
+            # output the first item last
+            idx = int(numlines) - _
+        print(p2000_pp(p2000data['p2000'][idx]))
 
-        print('{}{} - {}'. format(col, p2000data['p2000'][_]["date"],
-                                  p2000data['p2000'][_]["call_type"]))
-        print('{}{}' .format(col, p2000data['p2000'][_]["message"]))
-        for i in xrange(len(p2000data['p2000'][_]['called'])):
-            print('{}{}' .format(col, p2000data['p2000'][_]['called'][i]))
+    if args.follow:
+        refreshtime = int(conf.get('global', 'refreshtime'))
+        bar = Bar('Sleeping', max=refreshtime)
+        olddata = p2000data['p2000']
+        try:
+            while True:
+                newdata = libp2000.convert_to_json(libp2000.get_p2000_data(url))['p2000']
+                newdata.reverse()
+                diff = [x for x in newdata if x not in olddata]
+                if len(diff) > 0:
+                    for item in diff:
+                        print(p2000_pp(item))
+                olddata = newdata
+                bar.goto(0)
+                for t in range(refreshtime):
+                    bar.next()
+                    time.sleep(1)
+                bar.clearln()
 
-        print('{}' .format(rst))
+        except KeyboardInterrupt:
+            bar.finish()
+            sys.exit(0)
 
 if __name__ == "__main__":
     CONFIG = os.path.dirname(os.path.abspath(__file__)) + '/p2000.cfg'
