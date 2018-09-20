@@ -4,8 +4,8 @@
 # Purpose: Python script for showing emergency services pager messages
 #
 # Auhtor : Harald van der Laan
-# Date   : 2018/05/14
-# Version: v2.3.1
+# Date   : 2018/09/20
+# Version: v2.3.2
 #
 # Requirements:
 #  - requests
@@ -14,6 +14,7 @@
 #  - working internet connection
 #
 # Changelog:
+#  - v2.3.2     Bugfix: most recent message in -f mode was not shown     Harald
 #  - v2.3.1     Added extra option -c and clean up unused code           Harald
 #  - v2.3.0     pretify follow mode / autorefresh                        Gerdriaan
 #  - v2.2.3     better import of configfile                              Harald
@@ -127,7 +128,7 @@ def main(conf):
         if args.follow:
             # output the first item last
             idx = int(numlines) - _
-        print(p2000_pp(p2000data['p2000'][idx]))
+        print(p2000_pp(p2000data['p2000'][idx-1]))
 
     if args.follow:
         refreshtime = int(conf.get('global', 'refreshtime'))
