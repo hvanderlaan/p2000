@@ -70,7 +70,7 @@ import os
 import time
 import re
 import argparse
-import ConfigParser
+import configparser as ConfigParser
 
 try:
     from libp2000 import libp2000
@@ -100,7 +100,7 @@ def p2000_pp(el):
 
     ret = '{}{} - {}\n'.format(col, el["date"], el["call_type"])
     ret += '{}{}\n'.format(col, el["message"])
-    for i in xrange(len(el['called'])):
+    for i in range(len(el['called'])):
         ret += '{}{}\n' .format(col, el['called'][i])
 
     ret += '{}' .format(rst)
