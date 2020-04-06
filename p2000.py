@@ -1,11 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # File   : ./p2000.py
 # Purpose: Python script for showing emergency services pager messages
 #
 # Auhtor : Harald van der Laan
 # Date   : 2018/09/20
-# Version: v2.3.2
+# Version: v2.3.3
 #
 # Requirements:
 #  - requests
@@ -14,6 +14,7 @@
 #  - working internet connection
 #
 # Changelog:
+#  - v2.3.3     Quickfix for running with python3                        Michael
 #  - v2.3.2     Bugfix: most recent message in -f mode was not shown     Harald
 #  - v2.3.1     Added extra option -c and clean up unused code           Harald
 #  - v2.3.0     pretify follow mode / autorefresh                        Gerdriaan
