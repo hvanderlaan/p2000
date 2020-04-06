@@ -1,4 +1,4 @@
 language: python
 python:
-    - "2.7"
+    - "3.7"
 script: ./p2000.py && ./p2000.py -r grip && ./p2000.py -l 2 -r grip
